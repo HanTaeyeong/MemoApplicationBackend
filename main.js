@@ -3,11 +3,14 @@ require('dotenv').config();
 import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
-import cors from 'cors';
+// import cors from 'cors';
 import mongoose from 'mongoose';
 
+// import serve from 'koa-static'
+// import path from 'path';
+// import send from 'koa-send';
+
 import api from './api'
-import postApi from './api/post';
 
 import jwtMiddleware from './lib/jwtMiddleware';
 
@@ -16,8 +19,6 @@ const router = new Router();
 
 app.use(bodyParser());
 app.use(jwtMiddleware);
-
-// router.use('/api/post', postApi.routes());
 
 router.get('/', ctx => {
     ctx.body = "Home";
@@ -33,13 +34,20 @@ router.use('/api', api.routes())
 
 app.use(router.routes()).use(router.allowedMethods())
 
-const port = process.env.PORT || 4000;
+// const buildDirectory = path.resolve(__dirname, '../frontend/build');
+// app.use(serve(buildDirectory));
+// app.use(async ctx => {
+//     if (ctx.status = 404 && ctx.path.indexOf('/api') !== 0) {
+//         await send(ctx, 'index.html', { root: buildDirectory })
+//     }
+// })
+
+const port = process.env.PORT || 4311;
 
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri).then(() => {
     app.listen(port, () => {
         console.log('server is running')
     })
-  
 }).catch(e => console.log(e));
 
