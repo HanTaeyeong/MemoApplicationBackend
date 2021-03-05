@@ -3,7 +3,7 @@ require('dotenv').config();
 import Koa from 'koa';
 import Router from 'koa-router';
 import bodyParser from 'koa-bodyparser';
-// import cors from 'cors';
+import cors from '@koa/cors';
 import mongoose from 'mongoose';
 
 // import serve from 'koa-static'
@@ -19,6 +19,7 @@ const router = new Router();
 
 app.use(bodyParser());
 app.use(jwtMiddleware);
+app.use(cors());
 
 router.get('/', ctx => {
     ctx.body = "Home";
@@ -47,7 +48,7 @@ const port = process.env.PORT || 4311;
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri).then(() => {
     app.listen(port, () => {
-        console.log('server is running')
+        console.log('server is running at port '+port)
     })
 }).catch(e => console.log(e));
 
