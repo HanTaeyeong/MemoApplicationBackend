@@ -37,6 +37,7 @@ export const getPostList = async ctx => {
         
         ctx.body = posts.map(post => ({ ...post, _doc: { ...post._doc, contents: sanitizeHtml(post._doc.contents, { allowedTags: [] }) } }));
     } catch (e) {
+        console.log(e);
         ctx.throw(500, e)
     }
 };
