@@ -18,18 +18,18 @@ AuthSchema.methods.checkPassword = async function (password) {
     return await bcrypt.compare(password, this.hashedPassword);
 }
 
-AuthSchema.statics.findByUsername = function (username) {
-    return this.findOne({ username })
+AuthSchema.statics.findByUsername =async function (username) {
+    return await this.findOne({ username })
 }
 
-AuthSchema.methods.getSerialized = function () {
-    const data = this.toJSON();
+AuthSchema.methods.getSerialized =async function () {
+    const data = await this.toJSON();
     delete data.hashedPassword;
     return data;
 }
 
-AuthSchema.methods.generateToken = function () {
-    const token = jwt.sign({
+AuthSchema.methods.generateToken =async function () {
+    const token = await jwt.sign({
         _id: this.id,
         username: this.username,
     },

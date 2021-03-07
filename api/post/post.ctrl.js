@@ -26,7 +26,7 @@ export const getPostList = async ctx => {
             ctx.status = 400;
             return;
         }
-   
+
         const criteria = { username: ctx.state.auth.username };
         
         const posts = await Post.find(criteria).limit(limit).skip((page - 1) * 10).exec();
@@ -72,7 +72,7 @@ export const writePost = async ctx => {
         'required': ['title', 'contents']
     }
 
-    const validate = ajv.compile(schema)
+    const validate =await ajv.compile(schema)
 
     if (!validate({ title, contents, tags })) {
         ctx.status = 400;
@@ -135,7 +135,7 @@ export const updatePost = async ctx => {
             'tags': { 'type': 'array' },
         }
     }
-    const validate = ajv.compile(schema)
+    const validate = await ajv.compile(schema)
 
     if (!validate({ title, contents, tags })) {
         ctx.status = 400;

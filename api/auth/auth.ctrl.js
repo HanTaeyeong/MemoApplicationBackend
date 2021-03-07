@@ -22,8 +22,8 @@ const userSchema = {
 }
 
 export const register = async ctx => {
-    const validate = ajv.compile(userSchema);
-    const valid = validate(ctx.request.body);
+    const validate = await ajv.compile(userSchema);
+    const valid = await validate(ctx.request.body);
 
     if (!valid) {
         ctx.status = 400;
@@ -41,7 +41,7 @@ export const register = async ctx => {
         }
 
         const auth = new Auth({
-            username,posts:[]
+            username, posts: []
         })
 
         await auth.setPassword(password);
@@ -71,8 +71,8 @@ export const login = async ctx => {
         return;
     }
 
-    const validate = ajv.compile(userSchema);
-    const valid = validate(ctx.request.body);
+    const validate = await ajv.compile(userSchema);
+    const valid = await validate(ctx.request.body);
 
     if (!valid) {
         ctx.status = 400;
@@ -96,9 +96,9 @@ export const login = async ctx => {
         }
         ctx.body = auth.getSerialized();
 
-        const token = auth.generateToken();
+        const token = await auth.generateToken();
         ctx.cookies.set('access-token', token, {
-            maxAge: 1000 * 60 * 60 * 24 * 1,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
         })
 
@@ -120,7 +120,7 @@ export const check = async ctx => {
 }
 
 export const logout = async ctx => {
-    await ctx.cookies.set('access-token','');
+    await ctx.cookies.set('access-token', '');
     ctx.status = 204;
     return;
 }
