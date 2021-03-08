@@ -76,7 +76,7 @@ export const writePost = async ctx => {
 
     if (!validate({ title, contents, tags })) {
         ctx.status = 400;
-        ctx.body = 'invalid body error';
+        ctx.message = 'invalid body error';
         return;
     }
 

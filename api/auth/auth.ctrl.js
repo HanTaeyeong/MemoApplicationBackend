@@ -37,6 +37,7 @@ export const register = async ctx => {
 
         if (exists === [] || exists.length) {
             ctx.status = 409;
+            ctx.message='Already existing id';
             return;
         }
 
@@ -68,6 +69,7 @@ export const login = async ctx => {
 
     if (!username || !password) {
         ctx.status = 401;
+        ctx.message = 'username or password is missing';
         return;
     }
 
@@ -76,7 +78,8 @@ export const login = async ctx => {
 
     if (!valid) {
         ctx.status = 400;
-        ctx.message = JSON.stringify(validate.errors);
+        ctx.message= JSON.stringify(validate.errors);
+        
         return;
     }
 
@@ -84,6 +87,7 @@ export const login = async ctx => {
         const authData = await Auth.find({ username });
         if (!authData) {
             ctx.status = 401;
+            ctx.message= 'There is no such user'
             return;
         }
 
@@ -92,6 +96,7 @@ export const login = async ctx => {
         const valid = await auth.checkPassword(password);
         if (!valid) {
             ctx.status = 401;
+            ctx.message=  'invalid password'
             return;
         }
         ctx.body = auth.getSerialized();
@@ -101,7 +106,6 @@ export const login = async ctx => {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
         })
-
     } catch (e) {
         ctx.throw(500, e);
     }
