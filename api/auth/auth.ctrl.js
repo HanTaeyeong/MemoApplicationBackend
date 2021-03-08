@@ -47,14 +47,13 @@ export const register = async ctx => {
 
         await auth.setPassword(password);
         await auth.save();
-        ctx.body = auth.getSerialized();
+        ctx.body = await auth.getSerialized();
 
-        const token = auth.generateToken();
+        const token = await auth.generateToken();
         ctx.cookies.set('access-token', token, {
-            maxAge: 1000 * 60 * 60 * 24 * 1,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true
         });
-
 
         ctx.status = 200;
         return;
@@ -79,7 +78,6 @@ export const login = async ctx => {
     if (!valid) {
         ctx.status = 400;
         ctx.message= JSON.stringify(validate.errors);
-        
         return;
     }
 

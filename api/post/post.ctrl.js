@@ -27,15 +27,28 @@ export const getPostList = async ctx => {
             return;
         }
 
+        if(!ctx.state || !ctx.state.auth){
+            ctx.status=408;
+            return;
+        }
+
         const criteria = { username: ctx.state.auth.username };
-        
+        const postCount = await Post.countDocuments(criteria).exec();
+        if (postCount === 0) {
+            ctx.set('last-page', 1);
+            ctx.set('total-post-count', 0);
+            ctx.body =[];
+            ctx.status=200;
+            return;
+        }
+
         const posts = await Post.find(criteria).limit(limit).skip((page - 1) * 10).exec();
 
-        const postCount = await Post.countDocuments(criteria).exec();
         ctx.set('last-page', Math.ceil(postCount / limit));
-        ctx.set('total-post-count',postCount);
-        
+        ctx.set('total-post-count', postCount);
+
         ctx.body = posts.map(post => ({ ...post, _doc: { ...post._doc, contents: sanitizeHtml(post._doc.contents, { allowedTags: [] }) } }));
+        ctx.status=200;
     } catch (e) {
         console.log(e);
         ctx.throw(500, e)
@@ -72,7 +85,7 @@ export const writePost = async ctx => {
         'required': ['title', 'contents']
     }
 
-    const validate =await ajv.compile(schema)
+    const validate = await ajv.compile(schema)
 
     if (!validate({ title, contents, tags })) {
         ctx.status = 400;
