@@ -26,28 +26,30 @@ router.use('/api', api.routes())
 
 app.use(router.routes()).use(router.allowedMethods())
 
+
+const port = process.env.PORT || 5000;
+
+
 const buildDirectory = path.resolve(__dirname, './client/build');
 app.use(serve(buildDirectory));
 app.use(async ctx => {
-    if(ctx.port!==8080){
-        ctx.redirect(':8080');
+    if ((+ctx.port) !== port) {
+        ctx.redirect(`:${port}`);
     }
     if (ctx.status === 404 && ctx.path.indexOf('/api') !== 0) {
         await send(ctx, 'index.html', { root: buildDirectory })
     }
 })
 
-const port = process.env.PORT || 8080;
-
 const uri = process.env.MONGODB_URI;
-mongoose.connect(uri,{useNewUrlParser:true,useUnifiedTopology:true}).then(() => {
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     app.listen(port, () => {
-        console.log('server is running at port '+port)
+        console.log('server is running at port ' + port)
     });
-    app.listen(80,()=>{
+    app.listen(80, () => {
         console.log('for http port 80');
     });
-    app.listen(443,()=>{
+    app.listen(443, () => {
         console.log('for https port 443');
     })
 }).catch(e => console.log(e));
