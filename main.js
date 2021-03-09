@@ -29,6 +29,9 @@ app.use(router.routes()).use(router.allowedMethods())
 const buildDirectory = path.resolve(__dirname, './client/build');
 app.use(serve(buildDirectory));
 app.use(async ctx => {
+    if(ctx.port!==8080){
+        ctx.redirect(':8080');
+    }
     if (ctx.status === 404 && ctx.path.indexOf('/api') !== 0) {
         await send(ctx, 'index.html', { root: buildDirectory })
     }
@@ -41,5 +44,11 @@ mongoose.connect(uri,{useNewUrlParser:true,useUnifiedTopology:true}).then(() => 
     app.listen(port, () => {
         console.log('server is running at port '+port)
     });
+    app.listen(80,()=>{
+        console.log('for http port 80');
+    });
+    app.listen(443,()=>{
+        console.log('for https port 443');
+    })
 }).catch(e => console.log(e));
 
