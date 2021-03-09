@@ -34,7 +34,7 @@ app.use(async ctx => {
     }
 })
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 443;
 
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri).then(() => {
