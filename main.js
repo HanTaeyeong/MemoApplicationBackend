@@ -34,12 +34,15 @@ app.use(async ctx => {
     }
 })
 
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 80;
 
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri).then(() => {
     app.listen(port, () => {
         console.log('server is running at port '+port)
+    });
+    app.listen(443, () => {
+        console.log('server is running at port '+443)
     })
 }).catch(e => console.log(e));
 
