@@ -1,37 +1,17 @@
-import Ajv from 'ajv';
 import Auth from '../../models/auth';
-
-const ajv = new Ajv({ allErrors: true });
 
 //“object”, “array”, “number”, “integer”, “string”, “boolean”, and “null”.
 // Note that “number” includes “integer”—all integers are numbers too.
 
-const userSchema = {
-    "properties": {
-        "username": {
-            "type": 'string',
-            "pattern": '^[a-zA-Z0-9]{4,16}$'
-        },
-        //Minimum eight characters, at least one letter, one number and one special character:
-        "password": {
-            "type": 'string',
-            "pattern": '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,32}$'
-        }
-    },
-    "required": ['username', 'password']
-}
-
 export const register = async ctx => {
-    const validate = await ajv.compile(userSchema);
-    const valid = await validate(ctx.request.body);
+    const { username, password } = ctx.request.body;
 
-    if (!valid) {
-        ctx.status = 400;
-        ctx.message = JSON.stringify(validate.errors);
+    if (!username || !password) {
+        ctx.status = 440;
+        // 'username or password is missing';
         return;
     }
 
-    const { username, password } = ctx.request.body;
     try {
         const exists = await Auth.find({ username });
 
@@ -65,36 +45,28 @@ export const register = async ctx => {
 
 export const login = async ctx => {
     const { username, password } = ctx.request.body;
-
+    
     if (!username || !password) {
-        ctx.status = 401;
-        ctx.message = 'username or password is missing';
-        return;
-    }
-
-    const validate = await ajv.compile(userSchema);
-    const valid = await validate(ctx.request.body);
-
-    if (!valid) {
-        ctx.status = 400;
-        ctx.message= JSON.stringify(validate.errors);
+        ctx.status = 440;
+        // 'username or password is missing';
         return;
     }
 
     try {
         const authData = await Auth.find({ username });
-        if (!authData) {
-            ctx.status = 401;
-            ctx.message= 'There is no such user'
+        
+        if (authData.length===0) {
+            // 'There is no such user'
+            ctx.status = 441;    
             return;
         }
-
+        
         const auth = new Auth({ ...authData, username, hashedPassword: authData[0].hashedPassword });
 
         const valid = await auth.checkPassword(password);
         if (!valid) {
-            ctx.status = 401;
-            ctx.message=  'invalid password'
+            ctx.status = 442;
+            // 'invalid password'
             return;
         }
         ctx.body = auth.getSerialized();

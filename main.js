@@ -13,6 +13,7 @@ import send from 'koa-send';
 import api from './api'
 
 import jwtMiddleware from './lib/jwtMiddleware';
+import { nextTick } from 'process';
 
 const app = new Koa();
 const router = new Router();
@@ -29,9 +30,9 @@ app.use(router.routes()).use(router.allowedMethods())
 
 const port = process.env.PORT || 5000;
 
-
 const buildDirectory = path.resolve(__dirname, './client/build');
 app.use(serve(buildDirectory));
+
 app.use(async ctx => {
     if ((+ctx.port) !== port) {
         ctx.redirect(`:${port}`);
@@ -46,11 +47,11 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     app.listen(port, () => {
         console.log('server is running at port ' + port)
     });
-    app.listen(80, () => {
-        console.log('for http port 80');
-    });
-    app.listen(443, () => {
-        console.log('for https port 443');
-    })
+    // app.listen(80, () => {
+    //     console.log('for http port 80');
+    // });
+    // app.listen(443, () => {
+    //     console.log('for https port 443');
+    // })
 }).catch(e => console.log(e));
 
