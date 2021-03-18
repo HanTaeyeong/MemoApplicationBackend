@@ -100,3 +100,35 @@ export const logout = async ctx => {
 }
 
 
+
+// const sendMail = async (file) => {
+//     try {
+//         const nodemailer = require("nodemailer");
+
+//         let transporter = await nodemailer.createTransport({
+//             service: 'gmail',
+//             auth: {
+//                 user: 'dev@cloud-stones.com',
+//                 pass: 'lxdjauodrgkiamie'
+//             }
+//         });
+
+//         let mailOptions = {
+//             from: 'dev@cloud-stones.com',
+//             to: 'gksxodud2721@naver.com',
+//             subject: 'testing',
+//             text: 'it works',
+//             attachments: [{
+//                 filename: 'myfile.xlsx',
+//                 content: file
+//             }]
+//         }
+
+//         return transporter.sendMail(mailOptions);
+//     } catch (e) {
+//         console.log(e);
+//     }
+
+// }
+
+
