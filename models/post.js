@@ -9,7 +9,7 @@ const PostSchema = new Schema({
     user_id: mongoose.Types.ObjectId,
     username: String
 },
-    { timestamps: true });
+{ timestamps: true });
 
 const Post = mongoose.model('Post', PostSchema);
 export default Post;

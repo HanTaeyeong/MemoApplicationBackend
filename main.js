@@ -30,17 +30,17 @@ app.use(router.routes()).use(router.allowedMethods())
 
 const port = process.env.PORT || 5000;
 
-const buildDirectory = path.resolve(__dirname, './client/build');
-app.use(serve(buildDirectory));
+// const buildDirectory = path.resolve(__dirname, './client/build');
+// app.use(serve(buildDirectory));
 
-app.use(async ctx => {
-    if ((+ctx.port) !== port) {
-        ctx.redirect(`:${port}`);
-    }
-    if (ctx.status === 404 && ctx.path.indexOf('/api') !== 0) {
-        await send(ctx, 'index.html', { root: buildDirectory })
-    }
-})
+// app.use(async ctx => {
+//     if ((+ctx.port) !== port) {
+//         ctx.redirect(`:${port}`);
+//     }
+//     if (ctx.status === 404 && ctx.path.indexOf('/api') !== 0) {
+//         await send(ctx, 'index.html', { root: buildDirectory })
+//     }
+// })
 
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
