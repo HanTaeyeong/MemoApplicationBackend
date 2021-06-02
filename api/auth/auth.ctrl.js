@@ -1,9 +1,15 @@
+import bcrypt from 'bcrypt';
+
 import Auth from "../../models/auth";
 
 //“object”, “array”, “number”, “integer”, “string”, “boolean”, and “null”.
 // Note that “number” includes “integer”—all integers are numbers too.
 
 const serverUrl = "https://localhost:5000/auth/";
+
+//const hash = await bcrypt.hash('this is salt of bcrypt 3295fjsdj', 7);
+
+
 
 export const register = async (ctx) => {
   const { username, password } = ctx.request.body;
