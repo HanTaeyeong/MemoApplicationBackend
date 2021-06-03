@@ -45,8 +45,9 @@ export const getPostList = async (ctx) => {
       .skip((page - 1) * 10)
       .exec();
 
-    const lastPage = Math.ceil(postCount / limit);
+    const lastPage = ((postCount / limit) | 0) + 1;
     const totalPostCount = postCount;
+    
     const body = {
       posts: posts.map((post) => ({
         ...post,
