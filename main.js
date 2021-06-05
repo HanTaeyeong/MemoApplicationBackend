@@ -47,11 +47,5 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     app.listen(port, () => {
         console.log('server is running at port ' + port)
     });
-    // app.listen(80, () => {
-    //     console.log('for http port 80');
-    // });
-    // app.listen(443, () => {
-    //     console.log('for https port 443');
-    // })
 }).catch(e => console.log(e));
 
