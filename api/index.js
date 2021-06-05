@@ -7,6 +7,6 @@ const api = new Router();
 
 api.use('/post', post.routes());
 api.use('/auth', auth.routes());
-api.use('/health',health.routes());
+api.use('/health', health.routes());
 
 export default api;

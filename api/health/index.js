@@ -2,7 +2,7 @@ import Router from 'koa-router';
 
 const health = new Router();
 
-const healthCheck=async()=>{
+const healthCheck=async(ctx)=>{
     try{
         ctx.status=200;
     }catch(e){
@@ -13,4 +13,4 @@ const healthCheck=async()=>{
 
 health.get('/healthy', healthCheck);
 
-export const health;
+export default health;
