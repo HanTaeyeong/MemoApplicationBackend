@@ -28,7 +28,7 @@ router.use('/api', api.routes())
 app.use(router.routes()).use(router.allowedMethods())
 
 
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 5050;
 
 // const buildDirectory = path.resolve(__dirname, './client/build');
 // app.use(serve(buildDirectory));
