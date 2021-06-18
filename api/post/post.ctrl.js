@@ -45,7 +45,7 @@ export const getPostList = async (ctx) => {
       .skip((page - 1) * 10)
       .exec();
 
-    const lastPage = ((postCount / limit) | 0) + 1;
+    const lastPage = ((postCount + limit - 1) / limit) | 0;;
     const totalPostCount = postCount;
 
     const body = {
@@ -130,7 +130,6 @@ export const writePost = async (ctx) => {
           new: true,
         }
       ).exec();
-      console.log(res);
     } else {
       const res = await Auth.findOneAndUpdate(
         { username },
@@ -143,7 +142,6 @@ export const writePost = async (ctx) => {
           new: true,
         }
       ).exec();
-      console.log(res);
     }
 
     await post.save();
