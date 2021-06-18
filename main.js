@@ -22,7 +22,7 @@ const port = process.env.PORT || 8080;
 
 const uri = process.env.MONGODB_URI;
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }).then(() => {
     app.listen(port, () => {
         console.log('server is running at port ' + port)
     });

@@ -47,7 +47,7 @@ export const getPostList = async (ctx) => {
 
     const lastPage = ((postCount / limit) | 0) + 1;
     const totalPostCount = postCount;
-    
+
     const body = {
       posts: posts.map((post) => ({
         ...post,
@@ -156,7 +156,8 @@ export const writePost = async (ctx) => {
 export const deletePost = async (ctx) => {
   const { id } = ctx.params;
   try {
-    await Post.findByIdAndDelete(id).exec();
+    const res = await Post.findByIdAndDelete(id).exec();
+    ctx.status = 200;
   } catch (e) {
     ctx.throw(500, e);
   }
