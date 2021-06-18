@@ -41,7 +41,7 @@ export const register = async (ctx) => {
     const token = await auth.generateToken();
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
+      secure: true,
     });
 
     ctx.status = 200;
@@ -86,7 +86,7 @@ export const login = async (ctx) => {
     const token = await auth.generateToken();
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
+      secure: true,
     });
   } catch (e) {
     ctx.throw(500, e);
