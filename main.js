@@ -14,7 +14,7 @@ const router = new Router();
 
 app.use(bodyParser());
 app.use(jwtMiddleware);
-app.use(cors());
+app.use(cors({ credentials: true }));
 
 router.use('/api', api.routes())
 
