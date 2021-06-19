@@ -42,6 +42,7 @@ export const register = async (ctx) => {
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: true,
+      httpOnly:true
     });
 
     ctx.status = 200;
@@ -87,6 +88,7 @@ export const login = async (ctx) => {
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: true,
+      httpOnly:true
     });
   } catch (e) {
     ctx.throw(500, e);
@@ -132,6 +134,7 @@ export const sendAuthEmail = async () => {
     let transporter = await nodemailer.createTransport({
       service: "gmail",
       secure: false,
+      httpOnly:true,
       auth: {
         user: "simplememo.net@gmail.com",
         pass: "shinY;2787;",
