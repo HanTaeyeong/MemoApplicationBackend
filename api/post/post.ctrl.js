@@ -28,7 +28,7 @@ export const getPostList = async (ctx) => {
     }
 
     if (!ctx.state || !ctx.state.auth) {
-      ctx.status = 408;
+      ctx.status = 401;
       return;
     }
 
