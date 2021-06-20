@@ -5,9 +5,10 @@ import Auth from "../../models/auth";
 //“object”, “array”, “number”, “integer”, “string”, “boolean”, and “null”.
 // Note that “number” includes “integer”—all integers are numbers too.
 
-const serverUrl = "https://localhost:5000/auth/";
+const mode = process.env.MODE || 'dev';
 
 //const hash = await bcrypt.hash('this is salt of bcrypt 3295fjsdj', 7);
+
 
 
 
@@ -41,6 +42,8 @@ export const register = async (ctx) => {
     const token = await auth.generateToken();
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
+      secure: mode === 'production',
+      httpOnly: true
     });
 
     ctx.status = 200;
@@ -85,6 +88,8 @@ export const login = async (ctx) => {
     const token = await auth.generateToken();
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
+      secure: mode === 'production',
+      httpOnly: true
     });
   } catch (e) {
     ctx.throw(500, e);
@@ -150,7 +155,7 @@ export const sendAuthEmail = async () => {
     return transporter.sendMail(mailOptions);
   } catch (e) {
     console.log(e);
-  }finally{
+  } finally {
     console.log('sent verification email');
 
   }
