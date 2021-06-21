@@ -43,7 +43,8 @@ export const register = async (ctx) => {
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: mode === 'production',
-      httpOnly: true
+      httpOnly: true,
+      domain:'.simplememo.net'
     });
 
     ctx.status = 200;
@@ -89,7 +90,8 @@ export const login = async (ctx) => {
     ctx.cookies.set("access-token", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: mode === 'production',
-      httpOnly: true
+      httpOnly: true,
+      domain:'.simplememo.net'
     });
   } catch (e) {
     ctx.throw(500, e);
