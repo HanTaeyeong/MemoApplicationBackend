@@ -44,7 +44,7 @@ export const register = async (ctx) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: mode === 'production',
       httpOnly: true,
-      domain:'.simplememo.net'
+      sameSite:'none'
     });
 
     ctx.status = 200;
@@ -91,7 +91,7 @@ export const login = async (ctx) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: mode === 'production',
       httpOnly: true,
-      domain:'.simplememo.net'
+      sameSite:'none'
     });
   } catch (e) {
     ctx.throw(500, e);
