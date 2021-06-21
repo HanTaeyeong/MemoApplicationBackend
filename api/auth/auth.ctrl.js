@@ -79,19 +79,22 @@ export const login = async (ctx) => {
     ctx.body = auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.set("Authorization", "Bearer " + token);
+    ctx.set("authorization", "Bearer " + token);
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
 export const check = async (ctx) => {
-  const { auth } = ctx.state;
-  if (!auth) {
+  console.log('check',ctx.body)
+  
+  const user='sdf';
+
+  if (!user) {
     ctx.status = 401;
     return;
   }
-  ctx.body = auth;
+  ctx.body = user;
   ctx.status = 200;
 
   return;
