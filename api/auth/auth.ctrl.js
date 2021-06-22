@@ -1,16 +1,13 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 import Auth from "../../models/auth";
 
 //“object”, “array”, “number”, “integer”, “string”, “boolean”, and “null”.
 // Note that “number” includes “integer”—all integers are numbers too.
 
-const mode = process.env.MODE || 'dev';
+const mode = process.env.MODE || "dev";
 
 //const hash = await bcrypt.hash('this is salt of bcrypt 3295fjsdj', 7);
-
-
-
 
 export const register = async (ctx) => {
   const { username, password } = ctx.request.body;
@@ -40,13 +37,7 @@ export const register = async (ctx) => {
     ctx.body = await auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.cookies.set("access-token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      secure: mode === 'production',
-      httpOnly: true,
-      sameSite:'none',
-      domain:'.simplememo.net'
-    });
+    ctx.set("access-token", "Bearer " + token);
 
     ctx.status = 200;
     return;
@@ -88,32 +79,29 @@ export const login = async (ctx) => {
     ctx.body = auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.cookies.set("access-token", token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      secure: mode === 'production',
-      httpOnly: true,
-      sameSite:'none',
-      domain:'.simplememo.net'
-    });
+    ctx.set("authorization", "Bearer " + token);
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
 export const check = async (ctx) => {
-  const { auth } = ctx.state;
-  if (!auth) {
+  console.log('check',ctx.body)
+  
+  const user='sdf';
+
+  if (!user) {
     ctx.status = 401;
     return;
   }
-  ctx.body = auth;
+  ctx.body = user;
   ctx.status = 200;
 
   return;
 };
 
 export const logout = async (ctx) => {
-  await ctx.cookies.set("access-token", "");
+  await ctx.set("Authorization", "");
   ctx.status = 204;
   return;
 };
@@ -145,7 +133,10 @@ export const sendAuthEmail = async () => {
     });
     const confirmationCode = "abcd";
 
-    const [name, url] = ["Taeyeong", "http://localhost:5000/api/auth/verifyEmail/abcd"];
+    const [name, url] = [
+      "Taeyeong",
+      "http://localhost:5000/api/auth/verifyEmail/abcd",
+    ];
 
     const text = getAuthMailText(name, url);
 
@@ -160,8 +151,7 @@ export const sendAuthEmail = async () => {
   } catch (e) {
     console.log(e);
   } finally {
-    console.log('sent verification email');
-
+    console.log("sent verification email");
   }
 };
 

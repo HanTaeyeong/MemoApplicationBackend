@@ -12,9 +12,10 @@ import jwtMiddleware from './lib/jwtMiddleware';
 const app = new Koa();
 const router = new Router();
 
+app.use(jwtMiddleware);
 app.use(cors({ origin: '*', credentials: true }));
 app.use(bodyParser());
-app.use(jwtMiddleware);
+
 
 router.use('/api', api.routes())
 
