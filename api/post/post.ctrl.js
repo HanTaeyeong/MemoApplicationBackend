@@ -26,11 +26,15 @@ export const getPostList = async (ctx) => {
       ctx.status = 400;
       return;
     }
-    
-    console.log('getPostList',ctx.body);
-
-    const username ='htsdf';
-    
+    if (!ctx.body || !ctx.body.user) {
+      ctx.status = 401;
+      return;
+    }
+    const { username } = ctx.body.user;
+    if (!username) {
+      ctx.status = 401;
+      return;
+    }
     const criteria = { username };
     const postCount = await Post.countDocuments(criteria).exec();
     if (postCount === 0) {
@@ -83,6 +87,12 @@ export const readPost = async (ctx) => {
 export const writePost = async (ctx) => {
   const { title, contents, tags } = ctx.request.body;
   const { user } = ctx.body;
+
+  if (!user) {
+    ctx.status = 401;
+    return;
+  }
+
   const { _id, username } = user;
   const user_id = _id;
 
