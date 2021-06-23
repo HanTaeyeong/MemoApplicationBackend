@@ -37,7 +37,7 @@ export const register = async (ctx) => {
     ctx.body = await auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.set("authorization", "Bearer " + token);
+    ctx.set("Authorization", "Bearer " + token);
 
     ctx.status = 200;
     return;
@@ -79,7 +79,7 @@ export const login = async (ctx) => {
     ctx.body = auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.set("authorization", "Bearer " + token);
+    ctx.set("Authorization", "Bearer " + token);
   } catch (e) {
     ctx.throw(500, e);
   }
@@ -104,7 +104,7 @@ export const check = async (ctx) => {
 };
 
 export const logout = async (ctx) => {
-  await ctx.set("authorization", "");
+  await ctx.set("Authorization", "");
   ctx.status = 204;
   return;
 };
