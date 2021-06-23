@@ -13,7 +13,7 @@ const app = new Koa();
 const router = new Router();
 
 app.use(jwtMiddleware);
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors());
 app.use(bodyParser());
 
 
