@@ -34,10 +34,14 @@ export const register = async (ctx) => {
 
     await auth.setPassword(password);
     await auth.save();
-    ctx.body = await auth.getSerialized();
+
+    const serialized = await auth.getSerialized();
 
     const token = await auth.generateToken();
-    ctx.set("Authorization", "Bearer " + token);
+    ctx.body = {
+      serialized,
+      token: 'Bearer ' + token
+    }
 
     ctx.status = 200;
     return;
@@ -76,20 +80,25 @@ export const login = async (ctx) => {
       // 'invalid password'
       return;
     }
-    ctx.body = auth.getSerialized();
-
+    const serialized= await auth.getSerialized();
+    
     const token = await auth.generateToken();
-    ctx.set("Authorization", "Bearer " + token);
+    ctx.body={
+      serialized,
+      token:"Bearer "+token
+    }
+    ctx.status=200;
+    return;
   } catch (e) {
     ctx.throw(500, e);
   }
 };
 
 export const check = async (ctx) => {
-  
-  if(!ctx.body){
-    ctx.status=401;
-    return ;
+
+  if (!ctx.body) {
+    ctx.status = 401;
+    return;
   }
   const user = ctx.body.user;
 
@@ -104,7 +113,7 @@ export const check = async (ctx) => {
 };
 
 export const logout = async (ctx) => {
-  await ctx.set("Authorization", "");
+  ctx.body={message:'logout success'}
   ctx.status = 204;
   return;
 };
