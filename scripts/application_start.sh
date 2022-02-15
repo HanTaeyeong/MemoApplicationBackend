@@ -5,8 +5,7 @@ cd /home/ubuntu/backend
 #pull from git repository.
 git pull
 HanTaeyeong
-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
-
+some password
 #node modules update
 yarn
 
